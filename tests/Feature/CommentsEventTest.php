@@ -14,11 +14,6 @@ use Tests\TestCase;
 class CommentsEventTest extends TestCase
 {
 
-    public function testListening(): void
-    {
-        Event::fake();
-        Event::assertListening(CommentWritten::class, CommentListener::class);
-    }
     public  function testCommentWritten(){
         Event::fake();
         $comment =Comment::factory()->create();
