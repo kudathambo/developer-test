@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\CommentWritten;
+use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -21,6 +22,8 @@ class CommentListener
      */
     public function handle(CommentWritten $event): void
     {
-        //
+        $comment = $event->comment;
+        $user = $comment->user;
+        $commentsCount = $user->comments->count();
     }
 }
