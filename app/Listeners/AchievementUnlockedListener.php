@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\AchievementUnlocked;
+use App\Models\Achievement;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -21,6 +22,6 @@ class AchievementUnlockedListener
      */
     public function handle(AchievementUnlocked $event): void
     {
-        //
+        $event->user->achievements()->create(['achievement' => $event->achievement]);
     }
 }
