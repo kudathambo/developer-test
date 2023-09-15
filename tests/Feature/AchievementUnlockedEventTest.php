@@ -3,8 +3,6 @@
 namespace Tests\Feature;
 
 use App\Events\AchievementUnlocked;
-use App\Events\CommentWritten;
-use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
