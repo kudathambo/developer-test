@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\AchievementUnlocked;
 use App\Events\CommentWritten;
+use App\Listeners\AchievementUnlockedListener;
 use App\Listeners\CommentListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -22,6 +24,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         CommentWritten::class => [
             CommentListener::class
+        ],
+        AchievementUnlocked::class => [
+            AchievementUnlockedListener::class
         ]
     ];
 
