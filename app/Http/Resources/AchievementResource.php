@@ -23,7 +23,7 @@ class AchievementResource extends JsonResource
         $badgesAvailable = badgesAvailable();
         $commentAchievements = commentsWritten();
         $lessonAchievements = lessonsWatched();
-        $achievementsCount = $this->achievements->count();
+        $achievementsCount = $this->achievements()->count();
         foreach ($this->achievements as $achievement){
                 $unlocked[] = $achievement->name;
         }
@@ -38,10 +38,11 @@ class AchievementResource extends JsonResource
         if($currentBadge == null){
             $currentBadge = $this->badges()->create(['name' => $badgesAvailable[0]]);
         }
-        $nextBadges = array_filter($badgesAvailable,function($badge) use($currentBadge){
-            return $badge != $currentBadge->name;
-        });
-        $nextBadge = array_shift($nextBadges);
+        $currentBadgeIndex = array_search($currentBadge->name, $badgesAvailable);
+        $nextBadges = array_filter($badgesAvailable, function($badge, $index) use($currentBadgeIndex){
+            return $index > $currentBadgeIndex;
+         }, ARRAY_FILTER_USE_BOTH);
+        $nextBadge = array_shift($nextBadges) ?? '';
         $nextBadgeIndex = (int) array_search($nextBadge, $badgesAvailable);
         $nextCommentAchievement = array_filter($commentAchievements, function($comment) use($commentsWritten){
             return ! in_array($comment, $commentsWritten);
@@ -51,7 +52,7 @@ class AchievementResource extends JsonResource
         });
          return [
                 'unlocked_achievements' => $unlocked,
-                'next_available_achievements' => [array_shift($nextCommentAchievement), array_shift($nextLessonAchievement)],
+                'next_available_achievements' => array_filter([array_shift($nextCommentAchievement), array_shift($nextLessonAchievement)]),
                 'current_badge' => $currentBadge->name,
                 'next_badge' => $nextBadge,
                 'remaining_to_unlock_next_badge' => ($nextBadgeIndex - $achievementsCount)

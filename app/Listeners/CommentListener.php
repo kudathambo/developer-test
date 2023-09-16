@@ -28,7 +28,7 @@ class CommentListener
         $commentsToWrite = commentsWritten();
         $comment = $event->comment;
         $user = $comment->user;
-        $commentsCount = $user->comments->count();
+        $commentsCount = $user->comments()->count();
         $achievementUnlocked = "";
         if(isset($commentsToWrite[$commentsCount])){
             $achievementUnlocked = $commentsToWrite[$commentsCount];

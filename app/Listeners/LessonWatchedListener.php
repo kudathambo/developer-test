@@ -7,6 +7,7 @@ use App\Events\LessonWatched;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Log;
 
 class LessonWatchedListener
 {
@@ -31,7 +32,7 @@ class LessonWatchedListener
                 'watched' => true
             ]
         ]);
-        $lessonsCount = $user->watched->count();
+        $lessonsCount = $user->watched()->count();
         $achievementUnlocked = "";
         if(isset($lessonAchievements[$lessonsCount])){
             $achievementUnlocked = $lessonAchievements[$lessonsCount];
