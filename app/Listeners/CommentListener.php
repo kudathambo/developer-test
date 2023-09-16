@@ -48,7 +48,6 @@ class CommentListener
                 break;
         }
 
-        dd($achievementUnlocked, $user);
         if(!empty($achievementUnlocked)){
             Event::dispatch(new AchievementUnlocked($achievementUnlocked, $user));
         }

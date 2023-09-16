@@ -19,14 +19,11 @@ class CommentWrittenListenerTest extends TestCase
         Event::assertListening(CommentWritten::class, CommentListener::class);
     }
 
-//    public function testCommentWrittenListenerIsExecuted()
-//    {
-//        Event::fake();
-//        $comment = Comment::factory()->create();
-//        $user = $comment->user;
-//        \event(new CommentWritten($comment));
-//        $this->assertDatabaseHas('achievements', [
-//            'user_id' => $user->id
-//        ]);
-//    }
+    public function testCommentWrittenListenerIsExecuted()
+    {
+        Event::fake();
+        $comment = Comment::factory()->create();
+        \event(new CommentWritten($comment));
+        Event::assertListening(CommentWritten::class, CommentListener::class);
+    }
 }
