@@ -42,7 +42,8 @@ class CommentsEventTest extends TestCase
         });
     }
 
-    private function writeComment($uid){
+    private function writeComment($uid): void
+    {
         $comment = CommentFactory::new(['user_id' => $uid])->create();
         $event = new CommentWritten($comment);
         $listener = new CommentListener();
