@@ -25,28 +25,14 @@ class CommentListener
      */
     public function handle(CommentWritten $event): void
     {
+        $commentsToWrite = commentsWritten();
         $comment = $event->comment;
         $user = $comment->user;
         $commentsCount = $user->comments->count();
         $achievementUnlocked = "";
-        switch ($commentsCount){
-            case 1:
-                $achievementUnlocked = 'First Comment Written';
-                break;
-            case 3:
-                $achievementUnlocked = '3 Comments Written';
-                break;
-            case 5:
-                $achievementUnlocked = '5 Comments Written';
-                break;
-            case 10:
-                $achievementUnlocked = '10 Comments Written';
-                break;
-            case 20:
-                $achievementUnlocked = '20 Comments Written';
-                break;
+        if(isset($commentsToWrite[$commentsCount])){
+            $achievementUnlocked = $commentsToWrite[$commentsCount];
         }
-
         if(!empty($achievementUnlocked)){
             Event::dispatch(new AchievementUnlocked($achievementUnlocked, $user));
         }
