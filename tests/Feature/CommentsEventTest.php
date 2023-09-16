@@ -22,4 +22,5 @@ class CommentsEventTest extends TestCase
             return $e->comment->id == $comment->id;
         });
     }
+
 }

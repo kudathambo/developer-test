@@ -19,16 +19,17 @@ class BadgeUnlockedEventTest extends TestCase
     }
     public function testAchievementUnlockedIsDispatched(){
         Event::fake();
-        \event(new BadgeUnlocked('Beginner: 0 Achievements', User::factory()->create()));
-        Event::assertDispatched(BadgeUnlocked::class, function ($e){
-          return  $e->badge = 'Beginner: 0 Achievements';
+        $available = badgesAvailable();
+        \event(new BadgeUnlocked($available[0], User::factory()->create()));
+        Event::assertDispatched(BadgeUnlocked::class, function ($e) use($available){
+          return  $e->badge = $available[0];
         });
     }
     public  function testBadgeIsUnlocked(){
         Event::fake();
         $user = User::factory()->create();
         $listener = new BadgeUnlockedListener();
-        $event = new BadgeUnlocked('Beginner: 0 Achievements', $user);
+        $event = new BadgeUnlocked(badgesAvailable()[0], $user);
         $listener->handle($event);
         $this->assertDatabaseHas('badges', [
             'user_id' => $user->id
