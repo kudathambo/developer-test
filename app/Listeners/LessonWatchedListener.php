@@ -3,14 +3,12 @@
 namespace App\Listeners;
 
 use App\Events\AchievementUnlocked;
-use App\Events\CommentWritten;
-use App\Models\User;
+use App\Events\LessonWatched;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Log;
 
-class CommentListener
+class LessonWatchedListener
 {
     /**
      * Create the event listener.
@@ -23,13 +21,13 @@ class CommentListener
     /**
      * Handle the event.
      */
-    public function handle(CommentWritten $event): void
+    public function handle(LessonWatched $event): void
     {
-        $comment = $event->comment;
-        $user = $comment->user;
-        $commentsCount = $user->comments->count();
+        $lesson = $event->lesson;
+        $user = $event->user;
+        $lessonsCount = $user->watched->count();
         $achievementUnlocked = "";
-        switch ($commentsCount){
+        switch ($lessonsCount){
             case 1:
                 $achievementUnlocked = 'First Comment Written';
                 break;
@@ -42,8 +40,11 @@ class CommentListener
             case 10:
                 $achievementUnlocked = '10 Comments Written';
                 break;
-            case 20:
-                $achievementUnlocked = '20 Comments Written';
+            case 25:
+                $achievementUnlocked = '20 Lessons Watched';
+                break;
+            case 50:
+                $achievementUnlocked = '50 Lessons Watched';
                 break;
         }
 
