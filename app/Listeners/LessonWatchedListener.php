@@ -23,31 +23,19 @@ class LessonWatchedListener
      */
     public function handle(LessonWatched $event): void
     {
+        $lessonAchievements = lessonsWatched();
         $lesson = $event->lesson;
         $user = $event->user;
+        $user->watched()->attach([
+            $lesson->id => [
+                'watched' => true
+            ]
+        ]);
         $lessonsCount = $user->watched->count();
         $achievementUnlocked = "";
-        switch ($lessonsCount){
-            case 1:
-                $achievementUnlocked = 'First Comment Written';
-                break;
-            case 3:
-                $achievementUnlocked = '3 Comments Written';
-                break;
-            case 5:
-                $achievementUnlocked = '5 Comments Written';
-                break;
-            case 10:
-                $achievementUnlocked = '10 Comments Written';
-                break;
-            case 25:
-                $achievementUnlocked = '20 Lessons Watched';
-                break;
-            case 50:
-                $achievementUnlocked = '50 Lessons Watched';
-                break;
+        if(isset($lessonAchievements[$lessonsCount])){
+            $achievementUnlocked = $lessonAchievements[$lessonsCount];
         }
-
         if(!empty($achievementUnlocked)){
             Event::dispatch(new AchievementUnlocked($achievementUnlocked, $user));
         }
