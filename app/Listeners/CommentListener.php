@@ -7,6 +7,8 @@ use App\Events\CommentWritten;
 use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Log;
 
 class CommentListener
 {
@@ -23,6 +25,7 @@ class CommentListener
      */
     public function handle(CommentWritten $event): void
     {
+        Log::log($event);
         $comment = $event->comment;
         $user = $comment->user;
         $commentsCount = $user->comments->count();
@@ -45,8 +48,9 @@ class CommentListener
                 break;
         }
 
+        dd($achievementUnlocked, $user);
         if(!empty($achievementUnlocked)){
-            event(new AchievementUnlocked($achievementUnlocked, $user));
+            Event::dispatch(new AchievementUnlocked($achievementUnlocked, $user));
         }
     }
 }

@@ -13,14 +13,17 @@ use Illuminate\Queue\SerializesModels;
 
 class AchievementUnlocked
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, SerializesModels;
 
+    public  $achievement;
+    public  $user;
     /**
      * Create a new event instance.
      */
-    public function __construct(public $achievement, public User $user)
+    public function __construct($achievement, $user)
     {
-        //
+        $this->user = $user;
+        $this->achievement = $achievement;
     }
 
 }

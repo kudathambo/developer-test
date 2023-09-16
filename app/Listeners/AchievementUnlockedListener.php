@@ -10,18 +10,13 @@ use Illuminate\Queue\InteractsWithQueue;
 class AchievementUnlockedListener
 {
     /**
-     * Create the event listener.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Handle the event.
      */
-    public function handle(AchievementUnlocked $event): void
+    public function handle(AchievementUnlocked $event)
     {
-        $event->user->achievements()->create(['achievement' => $event->achievement]);
+        $user = $event->user;
+        $achievement = $event->achievement;
+        $data = ['name' => $achievement];
+        $user->achievements()->create($data);
     }
 }

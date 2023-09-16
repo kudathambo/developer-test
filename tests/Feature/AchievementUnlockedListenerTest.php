@@ -2,19 +2,19 @@
 
 namespace Tests\Feature;
 
+use App\Events\AchievementUnlocked;
+use App\Listeners\AchievementUnlockedListener;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
 class AchievementUnlockedListenerTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
-    public function test_example(): void
-    {
-        $response = $this->get('/');
 
-        $response->assertStatus(200);
+    public function testAchievementUnlockedListening(): void
+    {
+        Event::fake();
+        Event::assertListening(AchievementUnlocked::class, AchievementUnlockedListener::class);
     }
 }
